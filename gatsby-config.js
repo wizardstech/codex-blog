@@ -30,7 +30,7 @@ module.exports = {
     {
       resolve: `gatsby-source-strapi`,
       options: {
-        apiURL: process.env.DEPLOY_URL || `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`,
+        apiURL: process.env.CMS_URL || `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`,
         contentTypes: [ // List of the Content Types you want to be able to request from Gatsby.
           `article`,
           `user`
