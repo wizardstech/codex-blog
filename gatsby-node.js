@@ -106,7 +106,7 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
     }`,
   })
 
-  getCategories = collectionFactory.fetch({
+  const getCategories = collectionFactory.fetch({
     entity: 'Category',
     pathPrefix: 'categories',
     slugProperty: 'name',
@@ -117,5 +117,5 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
   })
 
   // Queries for articles and authors nodes to use in creating pages.
-  return Promise.all([getArticles, getAuthors, getTags])
+  return Promise.all([getArticles, getAuthors, getTags, getCategories])
 }
