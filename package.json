@@ -5,15 +5,20 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@material-ui/core": "^4.0.1",
+    "@material-ui/styles": "^4.0.1",
     "gatsby": "^2.7.5",
     "gatsby-image": "^2.1.2",
     "gatsby-plugin-manifest": "^2.1.1",
+    "gatsby-plugin-material-ui": "^2.0.1",
     "gatsby-plugin-offline": "^2.1.1",
     "gatsby-plugin-react-helmet": "^3.0.12",
+    "gatsby-plugin-sass": "^2.0.11",
     "gatsby-plugin-sharp": "^2.1.2",
     "gatsby-source-filesystem": "^2.0.37",
     "gatsby-source-strapi": "^0.0.8",
     "gatsby-transformer-sharp": "^2.1.20",
+    "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -21,6 +26,14 @@
     "react-markdown": "^4.0.8"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-config-react-app": "^4.0.1",
+    "eslint-import-resolver-babel-module": "^5.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.13.0",
     "prettier": "^1.17.1"
   },
   "keywords": [
@@ -29,7 +42,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop --host 0.0.0.0",
+    "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
     "serve": "gatsby serve",

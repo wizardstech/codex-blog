@@ -1,25 +1,25 @@
-import React from 'react';
-import { bool } from 'prop-types';
-import ReactMarkdown from 'react-markdown';
+import React from 'react'
+import { bool } from 'prop-types'
+import ReactMarkdown from 'react-markdown'
 
 const Markdown = props => {
-  const { excerpt, source } = props;
+  const { excerpt, source } = props
   return (
     <ReactMarkdown
-    {...props}
+      {...props}
       source={excerpt ? source.substring(0, 200).concat('...') : source}
       escapeHTML={false}
     />
-  );
+  )
 }
 
 Markdown.propTypes = {
   ...ReactMarkdown.propTypes,
-  excerpt: bool
-};
+  excerpt: bool,
+}
 
 Markdown.defaultProps = {
-  excerpt: false
-};
+  excerpt: false,
+}
 
-export default Markdown;
+export default Markdown

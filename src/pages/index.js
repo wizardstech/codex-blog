@@ -1,29 +1,38 @@
 import React from 'react'
-import { Link, graphql } from 'gatsby'
+import { graphql } from 'gatsby'
+import Typography from '@material-ui/core/Typography'
+import { shape, arrayOf, string } from 'prop-types'
 
 import Layout from '../components/Layout'
 import SEO from '../components/SEO'
-import Markdown from '../components/Markdown';
+import ArticleList from '../components/ArticleList'
+
+const title = 'Wizards Technologies - Codex'
 
 const IndexPage = ({ data }) => (
   <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <ul>
-      {data.allStrapiArticle.edges.map(document => (
-        <li key={document.node.id}>
-          <h2>
-            <Link to={`/articles/${document.node.strapiId}`}>{document.node.title}</Link>
-          </h2>
-          <Markdown source={document.node.content} excerpt />
-        </li>
-      ))}
-    </ul>
-    <Link to="/page-2/">Go to page 2</Link>
+    <SEO title={title} />
+    <Typography variant="srOnly">
+      <h1>{title}</h1>
+    </Typography>
+    <ArticleList articles={data.allStrapiArticle.edges.map(item => item.node)} />
   </Layout>
 )
+
+IndexPage.propTypes = {
+  data: shape({
+    allStrapiArticle: shape({
+      edges: arrayOf(
+        shape({
+          node: shape({
+            title: string.isRequired,
+            content: string.isRequired,
+          }).isRequired,
+        })
+      ),
+    }).isRequired,
+  }).isRequired,
+}
 
 export default IndexPage
 
@@ -32,10 +41,8 @@ export const query = graphql`
     allStrapiArticle {
       edges {
         node {
-          id
           title
           content
-          strapiId
         }
       }
     }
