@@ -12,7 +12,7 @@ import slugify from '../helpers/slugify'
 import styles from './Article.module.scss'
 
 const ArticleTemplate = ({ data }) => {
-  const { title, author, content, tags = [], category } = data.strapiArticle
+  const { title, author, content, tags = [], category } = data.strapi.article
 
   return (
     <Layout>
@@ -41,15 +41,17 @@ const ArticleTemplate = ({ data }) => {
 
 ArticleTemplate.propTypes = {
   data: shape({
-    strapiArticle: shape({
-      title: string.isRequired,
-      author: shape({}),
-      content: string.isRequired,
-      tags: arrayOf(shape({})),
-      category: shape({
-        id: number.isRequired,
-        name: string.isRequired,
-      }),
+    strapi: shape({
+      article: shape({
+        title: string.isRequired,
+        author: shape({}),
+        content: string.isRequired,
+        tags: arrayOf(shape({})),
+        category: shape({
+          id: number.isRequired,
+          name: string.isRequired,
+        }),
+      }).isRequired,
     }).isRequired,
   }).isRequired,
 }
@@ -57,21 +59,23 @@ ArticleTemplate.propTypes = {
 export default ArticleTemplate
 
 export const query = graphql`
-  query ArticleTemplate($id: String!) {
-    strapiArticle(id: { eq: $id }) {
-      title
-      content
-      author {
-        id
-        username
-      }
-      tags {
-        id
-        name
-      }
-      category {
-        id
-        name
+  query ArticleTemplate($id: ID!) {
+    strapi {
+      article(id: $id) {
+        title
+        content
+        author {
+          id
+          username
+        }
+        tags {
+          id
+          name
+        }
+        category {
+          id
+          name
+        }
       }
     }
   }

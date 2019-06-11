@@ -44,35 +44,38 @@ class CollectionFactory {
     this.createPage = createPage
   }
 
-  async fetch({ request, pathPrefix, slugProperty, entity }) {
-    const { data } = await makeRequest(
-      this.graphql,
-      `
+  async fetch({ pathPrefix, slugProperty, entity, plural }) {
+    const pluralizedEntity = plural || `${entity.toLowerCase()}s`
+    const query = `
     {
-      allStrapi${entity} {
-        edges {
-          node ${request}
+      strapi {
+        ${pluralizedEntity} {
+          id
+          ${slugProperty}
         }
       }
     }
     `
-    )
-    data[`allStrapi${entity}`].edges.forEach(({ node }) => {
-      this.createPage({
-        path: `/${pathPrefix}/${slugify(node[slugProperty])}`,
-        component: path.resolve(`src/templates/${entity}.js`),
-        context: {
-          id: node.id,
-        },
+    const { data } = await makeRequest(this.graphql, query)
+
+    if (data) {
+      data.strapi[pluralizedEntity].forEach(item => {
+        this.createPage({
+          path: `/${pathPrefix}/${slugify(item[slugProperty])}`,
+          component: path.resolve(`src/templates/${entity}.js`),
+          context: {
+            id: item.id,
+          },
+        })
       })
-    })
+    }
   }
 }
 
 // Implement the Gatsby API “createPages”. This is called once the
 // data layer is bootstrapped to let plugins create pages from data.
-exports.createPages = ({ boundActionCreators, graphql }) => {
-  const { createPage } = boundActionCreators
+exports.createPages = ({ actions, graphql }) => {
+  const { createPage } = actions
 
   const collectionFactory = new CollectionFactory({ graphql, createPage })
 
@@ -80,40 +83,25 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
     entity: 'Article',
     pathPrefix: 'articles',
     slugProperty: 'title',
-    request: `{
-      id
-      title
-    }`,
   })
 
   const getAuthors = collectionFactory.fetch({
     entity: 'User',
     pathPrefix: 'authors',
     slugProperty: 'username',
-    request: `{
-      id
-      username
-    }`,
   })
 
   const getTags = collectionFactory.fetch({
     entity: 'Tag',
     pathPrefix: 'tags',
     slugProperty: 'name',
-    request: `{
-      id
-      name
-    }`,
   })
 
   const getCategories = collectionFactory.fetch({
     entity: 'Category',
     pathPrefix: 'categories',
+    plural: 'categories',
     slugProperty: 'name',
-    request: `{
-      id
-      name
-    }`,
   })
 
   // Queries for articles and authors nodes to use in creating pages.

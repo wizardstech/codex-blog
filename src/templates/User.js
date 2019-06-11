@@ -7,7 +7,7 @@ import SEO from '../components/SEO'
 import ArticleList from '../components/ArticleList'
 
 const UserTemplate = ({ data }) => {
-  const { username, articles } = data.strapiUser
+  const { username, articles } = data.strapi.user
 
   return (
     <Layout>
@@ -20,14 +20,16 @@ const UserTemplate = ({ data }) => {
 
 UserTemplate.propTypes = {
   data: shape({
-    strapiUser: shape({
-      username: string.isRequired,
-      articles: arrayOf(
-        shape({
-          title: string.isRequired,
-          content: string.isRequired,
-        })
-      ),
+    strapi: shape({
+      user: shape({
+        username: string.isRequired,
+        articles: arrayOf(
+          shape({
+            title: string.isRequired,
+            content: string.isRequired,
+          })
+        ),
+      }).isRequired,
     }).isRequired,
   }).isRequired,
 }
@@ -35,12 +37,14 @@ UserTemplate.propTypes = {
 export default UserTemplate
 
 export const query = graphql`
-  query UserTemplate($id: String!) {
-    strapiUser(id: { eq: $id }) {
-      username
-      articles {
-        title
-        content
+  query UserTemplate($id: ID!) {
+    strapi {
+      user(id: $id) {
+        username
+        articles {
+          title
+          content
+        }
       }
     }
   }

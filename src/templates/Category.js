@@ -7,7 +7,7 @@ import SEO from '../components/SEO'
 import ArticleList from '../components/ArticleList'
 
 const CategoryTemplate = ({ data }) => {
-  const { name, articles } = data.strapiCategory
+  const { name, articles } = data.strapi.category
   return (
     <Layout>
       <SEO title={`Category | ${name}`} />
@@ -19,9 +19,11 @@ const CategoryTemplate = ({ data }) => {
 
 CategoryTemplate.propTypes = {
   data: shape({
-    strapiTag: shape({
-      name: string.isRequired,
-      articles: arrayOf(shape({})),
+    strapi: shape({
+      tag: shape({
+        name: string.isRequired,
+        articles: arrayOf(shape({})),
+      }).isRequired,
     }).isRequired,
   }).isRequired,
 }
@@ -29,12 +31,14 @@ CategoryTemplate.propTypes = {
 export default CategoryTemplate
 
 export const query = graphql`
-  query CategoryTemplate($id: String!) {
-    strapiCategory(id: { eq: $id }) {
-      name
-      articles {
-        title
-        content
+  query CategoryTemplate($id: ID!) {
+    strapi {
+      category(id: $id) {
+        name
+        articles {
+          title
+          content
+        }
       }
     }
   }
