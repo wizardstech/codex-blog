@@ -5,6 +5,7 @@ module.exports = {
     author: `Naimor`,
   },
   plugins: [
+    'gatsby-plugin-top-layout',
     `gatsby-plugin-sass`,
     `gatsby-plugin-react-helmet`,
     {
@@ -29,16 +30,14 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-strapi`,
+      resolve: `gatsby-source-graphql`,
       options: {
-        apiURL: process.env.CMS_URL || 'http://localhost:1337',
-        contentTypes: [
-          // List of the Content Types you want to be able to request from Gatsby.
-          `article`,
-          `user`,
-          `tag`,
-          `category`,
-        ],
+        // This type will contain remote schema Query type
+        typeName: `STRAPI`,
+        // This is field under which it's accessible
+        fieldName: `strapi`,
+        // Url to query from
+        url: `${process.env.CMS_URL || 'http://localhost:1337'}/graphql`,
       },
     },
     {

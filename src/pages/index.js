@@ -15,14 +15,14 @@ const IndexPage = ({ data }) => (
     <Typography variant="srOnly">
       <h1>{title}</h1>
     </Typography>
-    <ArticleList articles={data.allStrapiArticle.edges.map(item => item.node)} />
+    <ArticleList articles={data.strapi.articles} />
   </Layout>
 )
 
 IndexPage.propTypes = {
   data: shape({
-    allStrapiArticle: shape({
-      edges: arrayOf(
+    strapi: shape({
+      articles: arrayOf(
         shape({
           node: shape({
             title: string.isRequired,
@@ -38,12 +38,10 @@ export default IndexPage
 
 export const query = graphql`
   query {
-    allStrapiArticle {
-      edges {
-        node {
-          title
-          content
-        }
+    strapi {
+      articles {
+        title
+        content
       }
     }
   }
